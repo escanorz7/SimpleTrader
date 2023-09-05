@@ -40,7 +40,7 @@ namespace SimpleTrader.FinancialModelingPrepAPI.Services
                 case MajorIndexType.SP500:
                     return ".INX";
                 default:
-                    return ".DJI";
+                    throw new Exception("MajorIndexType doesn't have a suffix defined");
             }
         }
     }

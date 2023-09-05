@@ -13,7 +13,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" FontSize="18" Text="{Binding Type}"
+            <TextBlock Grid.Row="0" FontSize="18" Text="{Binding IndexName}"
                        HorizontalAlignment="Center"/>
 
             <Grid Grid.Row="1" Margin="0 10">
