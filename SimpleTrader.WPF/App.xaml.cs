@@ -1,5 +1,12 @@
-﻿using SimpleTrader.FinancialModelingPrepAPI.Services;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SimpleTrader.Domain.Models;
+using SimpleTrader.Domain.Services;
+using SimpleTrader.EntityFramework;
+using SimpleTrader.EntityFramework.Services;
+using SimpleTrader.FinancialModelingPrepAPI.Services;
+using SimpleTrader.WPF.State.Navigators;
 using SimpleTrader.WPF.ViewModels;
+using SimpleTrader.WPF.ViewModels.Factories;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,13 +24,36 @@ namespace SimpleTrader.WPF
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            IServiceProvider serviceProvider = CreateServiceProvider();
+
             Window window = new MainWindow();
-            window.DataContext = new MainViewModel();
+            window.DataContext = serviceProvider.GetRequiredService<MainViewModel>();
             window.Show();
 
-            new StockPriceService().GetPrice("AAaaaaPL");
-
             base.OnStartup(e);
+        }
+
+        private IServiceProvider CreateServiceProvider()
+        {
+            IServiceCollection services = new ServiceCollection();
+
+            services.AddSingleton<IStockPriceService, StockPriceService>();
+            services.AddSingleton<IDataService<Account>, AccountDataService>();
+            //services.AddDbContext<SimpleTraderDbContext>();
+            services.AddSingleton<IBuyStockService, BuyStockService>();
+            services.AddSingleton<IMajorIndexService, MajorIndexService>();
+
+
+            services.AddSingleton<ISimpleTraderViewModelAbstractFactory, SimpleTraderViewModelAbstractFactory>();
+            services.AddSingleton<ISimpleTraderViewModelFactory<HomeViewModel>, HomeViewModelFactory>();
+            services.AddSingleton<ISimpleTraderViewModelFactory<PortfolioViewModel>, PortfolioViewModelFactory>();
+            services.AddSingleton<ISimpleTraderViewModelFactory<MajorIndexViewModel>, MajorIndexViewModelFactory>();
+
+
+            services.AddScoped<INavigator, Navigator>();
+            services.AddScoped<MainViewModel>();
+
+            return services.BuildServiceProvider();
         }
     }
 }
