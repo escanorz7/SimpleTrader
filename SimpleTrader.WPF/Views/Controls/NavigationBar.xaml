@@ -15,7 +15,9 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Simple Trader" Background="{StaticResource BrushPrimary1}"/>
+        <TextBlock Grid.Row="0" Text="Simple Trader" 
+                   Background="{StaticResource BrushPrimary1}"
+                   Padding="10" FontSize="28" Foreground="White"/>
 
         <Grid Grid.Row="1" Background="{StaticResource BrushPrimary2}">
             <Grid.ColumnDefinitions>
@@ -28,12 +30,19 @@
 
             <RadioButton Grid.Column="0" Content="Home" 
                          Command="{Binding UpdateCurrentViewModelCommand}" 
-                         CommandParameter="{x:Static nav:ViewType.Home}"/>
+                         CommandParameter="{x:Static nav:ViewType.Home}"
+                         Style="{StaticResource NavButton}"/>
+            
             <RadioButton Grid.Column="1" Content="Portfolio"
                          Command="{Binding UpdateCurrentViewModelCommand}" 
-                         CommandParameter="{x:Static nav:ViewType.Portfolio}"/>
-            <RadioButton Grid.Column="2" Content="Buy"/>
-            <RadioButton Grid.Column="3" Content="Sell"/>
+                         CommandParameter="{x:Static nav:ViewType.Portfolio}"
+                         Style="{StaticResource NavButton}"/>
+
+            <RadioButton Grid.Column="2" Content="Buy"
+                         Style="{StaticResource NavButton}"/>
+            
+            <RadioButton Grid.Column="3" Content="Sell"
+                         Style="{StaticResource NavButton}"/>
         </Grid>
     </Grid>
 </UserControl>
