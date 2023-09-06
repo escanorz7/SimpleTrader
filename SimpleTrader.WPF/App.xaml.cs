@@ -39,7 +39,7 @@ namespace SimpleTrader.WPF
 
             services.AddSingleton<IStockPriceService, StockPriceService>();
             services.AddSingleton<IDataService<Account>, AccountDataService>();
-            //services.AddDbContext<SimpleTraderDbContext>();
+            services.AddDbContext<SimpleTraderDbContext>();
             services.AddSingleton<IBuyStockService, BuyStockService>();
             services.AddSingleton<IMajorIndexService, MajorIndexService>();
 
@@ -52,6 +52,7 @@ namespace SimpleTrader.WPF
 
             services.AddScoped<INavigator, Navigator>();
             services.AddScoped<MainViewModel>();
+            services.AddScoped<BuyViewModel>();
 
             return services.BuildServiceProvider();
         }
