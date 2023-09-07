@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SimpleTrader.EntityFramework.Services
 {
-    public class AccountDataService : IDataService<Account>
+    public class AccountDataService : IAccountService
     {
         private readonly SimpleTraderDbContext _context;
 
@@ -37,14 +37,36 @@ namespace SimpleTrader.EntityFramework.Services
 
         public async Task<Account> Get(int id)
         {
-            Account entity = await _context.Accounts.Include(a => a.AssetTransactions).FirstOrDefaultAsync(e => e.Id == id);
+            Account entity = await _context.Accounts
+                .Include(a => a.AccountHolder)
+                .Include(a => a.AssetTransactions)
+                .FirstOrDefaultAsync(e => e.Id == id);
+            
             return entity;
         }
 
         public async Task<IEnumerable<Account>> GetAll()
         {
-            IEnumerable<Account> entities = await _context.Accounts.Include(a => a.AssetTransactions).ToListAsync();
+            IEnumerable<Account> entities = await _context.Accounts
+                .Include(a => a.AccountHolder)
+                .Include(a => a.AssetTransactions)
+                .ToListAsync();
+            
             return entities;
+        }
+
+        public async Task<Account> GetByEmail(string email)
+        {
+            return await _context.Accounts
+                .Include(a => a.AccountHolder)
+                .FirstOrDefaultAsync(a => a.AccountHolder.Email == email);
+        }
+
+        public async Task<Account> GetByUserName(string userName)
+        {
+            return await _context.Accounts
+                .Include(a => a.AccountHolder)
+                .FirstOrDefaultAsync(a => a.AccountHolder.UserName == userName);
         }
 
         public async Task<Account> Update(int id, Account entity)
