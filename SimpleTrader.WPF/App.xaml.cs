@@ -54,7 +54,10 @@ namespace SimpleTrader.WPF
             services.AddSingleton<ISimpleTraderViewModelFactory<HomeViewModel>, HomeViewModelFactory>();
             services.AddSingleton<ISimpleTraderViewModelFactory<PortfolioViewModel>, PortfolioViewModelFactory>();
             services.AddSingleton<ISimpleTraderViewModelFactory<MajorIndexViewModel>, MajorIndexViewModelFactory>();
-            services.AddSingleton<ISimpleTraderViewModelFactory<LoginViewModel>, LoginViewModelFactory>();
+            services.AddSingleton<ISimpleTraderViewModelFactory<LoginViewModel>>((services) => 
+                new LoginViewModelFactory(services.GetRequiredService<IAuthenticator>(),
+                    new Renavigator<HomeViewModel>(services.GetRequiredService<INavigator>(), 
+                        services.GetRequiredService<ISimpleTraderViewModelFactory<HomeViewModel>>())));
 
 
             services.AddScoped<INavigator, Navigator>();

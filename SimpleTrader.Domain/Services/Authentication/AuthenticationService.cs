@@ -23,11 +23,17 @@ namespace SimpleTrader.Domain.Services.Authentication
         {
             Account storedAccount = await _accountService.GetByUserName(userName);
 
-            PasswordVerificationResult passwordResult = _passwordHasher.VerifyHashedPassword(storedAccount.AccountHolder.Password, password);
-            
-            if (passwordResult != PasswordVerificationResult.Success)
+            try
             {
-                throw new Exception("Credentials are incorrect");
+                PasswordVerificationResult passwordResult = _passwordHasher.VerifyHashedPassword(storedAccount.AccountHolder.Password, password);
+                if (passwordResult != PasswordVerificationResult.Success)
+                {
+                    throw new Exception("Credentials are incorrect");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Please Enter UserName");
             }
 
             return storedAccount;
