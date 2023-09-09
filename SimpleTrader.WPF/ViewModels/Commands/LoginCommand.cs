@@ -34,7 +34,7 @@ namespace SimpleTrader.WPF.ViewModels.Commands
         {
             bool result = await _authenticator.Login(_loginViewModel.UserName, parameter.ToString());
 
-            if (result != true)
+            if (result == true)
             {
                 _renavigator.Renavigate();
             }
