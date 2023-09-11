@@ -8,10 +8,12 @@ namespace SimpleTrader.WPF.ViewModels
 {
     public class HomeViewModel : ViewModelBase
     {
-        public MajorIndexViewModel MajorIndexViewModel { get; set; }
+        public AssetSummaryViewModel AssetSummaryViewModel { get; }
+        public MajorIndexViewModel MajorIndexViewModel { get; }
 
-        public HomeViewModel(MajorIndexViewModel majorIndexViewModel)
+        public HomeViewModel(AssetSummaryViewModel assetSummaryViewModel, MajorIndexViewModel majorIndexViewModel)
         {
+            AssetSummaryViewModel = assetSummaryViewModel;
             MajorIndexViewModel = majorIndexViewModel;
         }
     }

@@ -59,6 +59,7 @@ namespace SimpleTrader.EntityFramework.Services
         {
             return await _context.Accounts
                 .Include(a => a.AccountHolder)
+                .Include(a => a.AssetTransactions)
                 .FirstOrDefaultAsync(a => a.AccountHolder.Email == email);
         }
 
@@ -66,6 +67,7 @@ namespace SimpleTrader.EntityFramework.Services
         {
             return await _context.Accounts
                 .Include(a => a.AccountHolder)
+                .Include(a => a.AssetTransactions)
                 .FirstOrDefaultAsync(a => a.AccountHolder.UserName == userName);
         }
 

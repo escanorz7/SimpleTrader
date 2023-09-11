@@ -1,5 +1,4 @@
-﻿using SimpleTrader.WPF.Models;
-using SimpleTrader.WPF.ViewModels;
+﻿using SimpleTrader.WPF.ViewModels;
 using SimpleTrader.WPF.ViewModels.Commands;
 using SimpleTrader.WPF.ViewModels.Factories;
 using System;
