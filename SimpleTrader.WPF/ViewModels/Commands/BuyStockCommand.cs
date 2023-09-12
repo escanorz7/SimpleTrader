@@ -35,9 +35,11 @@ namespace SimpleTrader.WPF.ViewModels.Commands
         {
             try
             {
-                Account account = await _buyStockService.BuyStock(_accountStore.CurrentAccount, _buyViewModel.Symbol, _buyViewModel.SharesToBuy);
+                Account account = await _buyStockService.BuyStock(_accountStore.CurrentAccount, _buyViewModel.Symbol.ToUpper(), _buyViewModel.SharesToBuy);
                 
                 _accountStore.CurrentAccount = account;
+
+                MessageBox.Show("Transaction Successfully completed");
             }
             catch (Exception ex)
             {

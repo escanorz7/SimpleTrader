@@ -28,10 +28,10 @@
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Price" Margin="5"/>
                 <TextBlock Grid.Row="0" Grid.Column="1" Margin="5"
+                           HorizontalAlignment="Right"
                            Text="{Binding Price, StringFormat={}{0:C}}"/>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Changes" Margin="5"
-                           HorizontalAlignment="Right"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Changes" Margin="5"/>
                 <TextBlock Grid.Row="1" Grid.Column="1" Margin="5"
                            HorizontalAlignment="Right"
                            Text="{Binding Changes, StringFormat={}{0:C}}"/>
