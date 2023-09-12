@@ -1,4 +1,5 @@
-﻿using SimpleTrader.Domain.Models;
+﻿using SimpleTrader.Domain.Exceptions;
+using SimpleTrader.Domain.Models;
 using SimpleTrader.Domain.Services;
 using SimpleTrader.WPF.State.Accounts;
 using System;
@@ -33,17 +34,26 @@ namespace SimpleTrader.WPF.ViewModels.Commands
 
         public async void Execute(object? parameter)
         {
+            _buyViewModel.ErrorMessage = string.Empty;
+            _buyViewModel.StatusMessage = string.Empty;
+
             try
             {
-                Account account = await _buyStockService.BuyStock(_accountStore.CurrentAccount, _buyViewModel.Symbol.ToUpper(), _buyViewModel.SharesToBuy);
-                
+                string symbol = _buyViewModel.Symbol.ToUpper();
+                int shares = _buyViewModel.SharesToBuy;
+                Account account = await _buyStockService.BuyStock(_accountStore.CurrentAccount, symbol, shares);
+
                 _accountStore.CurrentAccount = account;
 
-                MessageBox.Show("Transaction Successfully completed");
+                _buyViewModel.StatusMessage = $"Successfully purchased {shares} shares of {symbol}";
             }
-            catch (Exception ex)
+            catch (InsufficientFundsException)
             {
-                MessageBox.Show(ex.Message);
+                _buyViewModel.ErrorMessage = "Account has Insufficient Funds.";
+            }
+            catch (Exception)
+            {
+                _buyViewModel.ErrorMessage = "Transaction Failed.";
             }
         }
     }

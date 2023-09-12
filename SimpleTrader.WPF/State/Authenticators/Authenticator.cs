@@ -36,20 +36,9 @@ namespace SimpleTrader.WPF.State.Authenticators
             }
         }
 
-        public async Task<bool> Login(string userName, string password)
+        public async Task Login(string userName, string password)
         {
-            bool result = true;
-
-            try
-            {
-                CurrentAccount = await _authenticationService.Login(userName, password);
-            }
-            catch (Exception ex)
-            {
-                result = false;
-            }
-
-            return result;
+            CurrentAccount = await _authenticationService.Login(userName, password);
         }
 
         public void Logout()

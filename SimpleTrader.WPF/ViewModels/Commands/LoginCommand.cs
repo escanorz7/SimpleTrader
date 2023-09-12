@@ -1,4 +1,5 @@
-﻿using SimpleTrader.WPF.State.Authenticators;
+﻿using SimpleTrader.Domain.Exceptions;
+using SimpleTrader.WPF.State.Authenticators;
 using SimpleTrader.WPF.State.Navigators;
 using SimpleTrader.WPF.ViewModels.Factories;
 using System;
@@ -32,13 +33,25 @@ namespace SimpleTrader.WPF.ViewModels.Commands
 
         public async void Execute(object? parameter)
         {
-            bool result = await _authenticator.Login(_loginViewModel.UserName, parameter.ToString());
+            _loginViewModel.ErrorMessage = string.Empty;
 
-            if (result == true)
+            try
             {
+                await _authenticator.Login(_loginViewModel.UserName, parameter.ToString());
+
                 _renavigator.Renavigate();
             }
-
+            catch (Exception ex)
+            {
+                if (ex is UserNotFoundException || ex is InvalidPasswordException)
+                {
+                    _loginViewModel.ErrorMessage = "Credentials are incorrect.";
+                }
+                else
+                {
+                    _loginViewModel.ErrorMessage = "Login Failed. Please try again later.";
+                }
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using SimpleTrader.Domain.Exceptions;
 using SimpleTrader.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -23,17 +24,15 @@ namespace SimpleTrader.Domain.Services.Authentication
         {
             Account storedAccount = await _accountService.GetByUserName(userName);
 
-            try
+            if (storedAccount == null)
             {
-                PasswordVerificationResult passwordResult = _passwordHasher.VerifyHashedPassword(storedAccount.AccountHolder.Password, password);
-                if (passwordResult != PasswordVerificationResult.Success)
-                {
-                    throw new Exception("Credentials are incorrect");
-                }
+                throw new UserNotFoundException();
             }
-            catch (Exception ex)
+
+            PasswordVerificationResult passwordResult = _passwordHasher.VerifyHashedPassword(storedAccount.AccountHolder.Password, password);
+            if (passwordResult != PasswordVerificationResult.Success)
             {
-                throw new Exception("Please Enter UserName");
+                throw new InvalidPasswordException();
             }
 
             return storedAccount;
