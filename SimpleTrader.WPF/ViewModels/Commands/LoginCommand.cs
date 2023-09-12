@@ -37,7 +37,7 @@ namespace SimpleTrader.WPF.ViewModels.Commands
 
             try
             {
-                await _authenticator.Login(_loginViewModel.UserName, parameter.ToString());
+                await _authenticator.Login(_loginViewModel.UserName, _loginViewModel.Password);
 
                 _renavigator.Renavigate();
             }
