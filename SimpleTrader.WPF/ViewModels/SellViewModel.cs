@@ -1,5 +1,6 @@
 ﻿using SimpleTrader.Domain.Services;
 using SimpleTrader.WPF.State.Accounts;
+using SimpleTrader.WPF.State.Assets;
 using SimpleTrader.WPF.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
@@ -10,22 +11,27 @@ using System.Windows.Input;
 
 namespace SimpleTrader.WPF.ViewModels
 {
-    public class BuyViewModel : ViewModelBase, ISearchSymbolViewModel
+    public class SellViewModel : ViewModelBase, ISearchSymbolViewModel
     {
+        public AssetListingViewModel AssetListingViewModel { get; }
+
+		private AssetViewModel _selectedAsset;
+		public AssetViewModel SelectedAsset
+		{
+			get
+			{
+				return _selectedAsset;
+			}
+			set
+			{
+				_selectedAsset = value;
+				OnPropertyChanged(nameof(SelectedAsset));
+			}
+		}
+
         private string _symbol;
 
-        public string Symbol
-        {
-            get
-            {
-                return _symbol;
-            }
-            set
-            {
-                _symbol = value;
-                OnPropertyChanged(nameof(Symbol));
-            }
-        }
+        public string Symbol => SelectedAsset.Symbol;
 
         private string _searchResultSymbol;
         public string SearchResultSymbol
@@ -52,32 +58,25 @@ namespace SimpleTrader.WPF.ViewModels
             {
                 _stockPrice = value;
                 OnPropertyChanged(nameof(StockPrice));
-                OnPropertyChanged(nameof(TotalPrice));
             }
         }
 
-        private int _sharesToBuy;
-        public int SharesToBuy
+        private int _sharesToSell;
+        public int SharesToSell
         {
             get
             {
-                return _sharesToBuy;
+                return _sharesToSell;
             }
             set
             {
-                _sharesToBuy = value;
-                OnPropertyChanged(nameof(SharesToBuy));
+                _sharesToSell = value;
+                OnPropertyChanged(nameof(SharesToSell));
                 OnPropertyChanged(nameof(TotalPrice));
             }
         }
 
-        public double TotalPrice
-        {
-            get
-            {
-                return SharesToBuy * StockPrice;
-            }
-        }
+        public double TotalPrice => SharesToSell * StockPrice;
 
         public MessageViewModel ErrorMessageViewModel { get; }
 
@@ -93,16 +92,22 @@ namespace SimpleTrader.WPF.ViewModels
             set => StatusMessageViewModel.Message = value;
         }
 
+        public ICommand SearchSymbolCommand { get; }
+		public ICommand SellStockCommand { get; }
+        
 
-        public ICommand SearchSymbolCommand { get; set; }
-        public ICommand BuyStockCommand { get; set; }
-
-        public BuyViewModel(IStockPriceService stockPriceService, IBuyStockService buyStockService, IAccountStore accountStore)
+        public SellViewModel(
+            AssetStore assetStore, 
+            IStockPriceService stockPriceService, 
+            IAccountStore accountStore, 
+            ISellStockService sellStockService)
         {
-            SearchSymbolCommand = new SearchSymbolCommand(this, stockPriceService);
-            BuyStockCommand = new BuyStockCommand(this, buyStockService, accountStore);
+            AssetListingViewModel = new AssetListingViewModel(assetStore);
+			SearchSymbolCommand = new SearchSymbolCommand(this, stockPriceService);
+            SellStockCommand = new SellStockCommand(this, sellStockService, accountStore);
             ErrorMessageViewModel = new MessageViewModel();
             StatusMessageViewModel = new MessageViewModel();
         }
+
     }
 }

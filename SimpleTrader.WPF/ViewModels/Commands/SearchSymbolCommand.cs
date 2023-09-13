@@ -12,14 +12,14 @@ namespace SimpleTrader.WPF.ViewModels.Commands
 {
     public class SearchSymbolCommand : ICommand
     {
-        private BuyViewModel _buyViewModel;
+        private ISearchSymbolViewModel _searchSymbolViewModel;
         private IStockPriceService _stockPriceService;
 
         public event EventHandler? CanExecuteChanged;
 
-        public SearchSymbolCommand(BuyViewModel buyViewModel, IStockPriceService stockPriceService)
+        public SearchSymbolCommand(ISearchSymbolViewModel searchSymbolViewModel, IStockPriceService stockPriceService)
         {
-            _buyViewModel = buyViewModel;
+            _searchSymbolViewModel = searchSymbolViewModel;
             _stockPriceService = stockPriceService;
         }
 
@@ -30,22 +30,19 @@ namespace SimpleTrader.WPF.ViewModels.Commands
 
         public async void Execute(object? parameter)
         {
-            _buyViewModel.ErrorMessage = string.Empty;
-            _buyViewModel.StatusMessage = string.Empty;
-
             try
             {
-                double stockPrice = await _stockPriceService.GetPrice(_buyViewModel.Symbol);
-                _buyViewModel.SearchResultSymbol = _buyViewModel.Symbol.ToUpper();
-                _buyViewModel.StockPrice = stockPrice;
+                double stockPrice = await _stockPriceService.GetPrice(_searchSymbolViewModel.Symbol);
+                _searchSymbolViewModel.SearchResultSymbol = _searchSymbolViewModel.Symbol.ToUpper();
+                _searchSymbolViewModel.StockPrice = stockPrice;
             }
             catch (InvalidSymbolException)
             {
-                _buyViewModel.ErrorMessage = "Symbol Doesn't exist.";
+                _searchSymbolViewModel.ErrorMessage = "Symbol Doesn't exist.";
             }
             catch (Exception)
             {
-                _buyViewModel.ErrorMessage = "An error has occured.";
+                _searchSymbolViewModel.ErrorMessage = "An error has occured.";
             }
         }
     }
