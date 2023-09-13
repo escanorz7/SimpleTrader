@@ -12,17 +12,23 @@ namespace SimpleTrader.WPF.ViewModels
     {
         private readonly AssetStore _assetStore;
         private readonly ObservableCollection<AssetViewModel> _assets;
+        private readonly Func<IEnumerable<AssetViewModel>, IEnumerable<AssetViewModel>> _filterAssets;
         public IEnumerable<AssetViewModel> Assets => _assets;
 
-        public AssetListingViewModel(AssetStore assetStore)
+        public AssetListingViewModel(AssetStore assetStore, Func<IEnumerable<AssetViewModel>, IEnumerable<AssetViewModel>> filterAssets)
         {
             _assetStore = assetStore;
             _assets = new ObservableCollection<AssetViewModel>();
+            _filterAssets = filterAssets;
             _assetStore.StateChanged += AssetStore_StateChanged;
 
             ResetAssets();
         }
 
+        public AssetListingViewModel(AssetStore assetStore) : this(assetStore, assets => assets)
+        {
+
+        }
 
         private void ResetAssets()
         {
@@ -31,6 +37,8 @@ namespace SimpleTrader.WPF.ViewModels
                 .Select(g => new AssetViewModel(g.Key, g.Sum(a => a.IsPurchase ? a.Shares : -a.Shares)))
                 .Where(a => a.Shares > 0)
                 .OrderByDescending(a => a.Shares);
+
+            assetViewModels = _filterAssets(assetViewModels);
 
             _assets.Clear();
             foreach (AssetViewModel assetViewModel in assetViewModels)

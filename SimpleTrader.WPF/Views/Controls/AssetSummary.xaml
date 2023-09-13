@@ -43,7 +43,7 @@
             <TextBlock
                 Grid.Row="0"
                 FontSize="18"
-                Text="Assets" />
+                Text="Top Assets" />
 
             <local:AssetListing
                 Grid.Row="1"

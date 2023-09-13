@@ -52,6 +52,7 @@ namespace SimpleTrader.WPF
                     services.AddSingleton<IStockPriceService, StockPriceService>();
                     services.AddSingleton<IDataService<Account>, AccountDataService>();
                     services.AddDbContext<SimpleTraderDbContext>(options => options.UseSqlServer(connectionString));
+                    services.AddSingleton<ISellStockService, SellStockService>();
                     services.AddSingleton<IBuyStockService, BuyStockService>();
                     services.AddSingleton<IMajorIndexService, MajorIndexService>();
                     services.AddSingleton<IAccountService, AccountDataService>();

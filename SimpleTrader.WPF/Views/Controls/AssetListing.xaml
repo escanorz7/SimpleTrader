@@ -8,10 +8,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <ListView
-        MaxHeight="150"
-        BorderThickness="0"
-        ItemsSource="{Binding Assets}">
+    <ListView BorderThickness="0" ItemsSource="{Binding Assets}">
         <ListView.View>
             <GridView>
                 <GridView.ColumnHeaderContainerStyle>
