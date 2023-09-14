@@ -13,25 +13,25 @@ namespace SimpleTrader.FinancialModelingPrepAPI.Services
 {
     public class StockPriceService : IStockPriceService
     {
+        private readonly FinancialModelingPrepHttpClient _client;
+
+        public StockPriceService(FinancialModelingPrepHttpClient client)
+        {
+            _client = client;
+        }
+
         public async Task<double> GetPrice(string symbol)
         {
-            using (HttpClient client = new())
+            string uri = "stock/real-time-price/" + symbol;
+
+            StockPriceResult stockPriceResult = await _client.GetAsync<StockPriceResult>(uri);
+
+            if (stockPriceResult.Price == 0)
             {
-                string uri = "https://financialmodelingprep.com/api/v3/stock/real-time-price/" + symbol;
-                string apiKey = "?apikey=f85011934d721df2d3f8001ba4adf999";
-
-                HttpResponseMessage response = await client.GetAsync(uri + apiKey);
-                string jsonRespone = await response.Content.ReadAsStringAsync();
-
-                StockPriceResult result = JsonConvert.DeserializeObject<StockPriceResult>(jsonRespone);
-
-                if (result.Price == 0)
-                {
-                    throw new InvalidSymbolException(symbol);
-                }
-
-                return result.Price;
+                throw new InvalidSymbolException(symbol);
             }
+
+            return stockPriceResult.Price;
         }
     }
 }

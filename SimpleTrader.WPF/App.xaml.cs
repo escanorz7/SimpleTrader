@@ -8,6 +8,7 @@ using SimpleTrader.Domain.Services;
 using SimpleTrader.Domain.Services.Authentication;
 using SimpleTrader.EntityFramework;
 using SimpleTrader.EntityFramework.Services;
+using SimpleTrader.FinancialModelingPrepAPI;
 using SimpleTrader.FinancialModelingPrepAPI.Services;
 using SimpleTrader.WPF.HostBuilders;
 using SimpleTrader.WPF.State.Accounts;
@@ -21,6 +22,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -43,6 +45,7 @@ namespace SimpleTrader.WPF
         {
             return Host.CreateDefaultBuilder(args)
                 .AddConfiguration()
+                .AddFinanceAPI()
                 .AddDbContext()
                 .AddServices()
                 .AddStores()

@@ -3,6 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SimpleTrader.EntityFramework;
+using SimpleTrader.FinancialModelingPrepAPI;
+using System;
+using System.Net.Http;
 
 namespace SimpleTrader.WPF.HostBuilders
 {
@@ -12,7 +15,7 @@ namespace SimpleTrader.WPF.HostBuilders
         {
             hostBuilder.ConfigureServices((context, services) =>
              {
-                 string connectionString = context.Configuration.GetConnectionString("default");
+                 string? connectionString = context.Configuration.GetConnectionString("default");
                  services.AddDbContext<SimpleTraderDbContext>(options => options.UseSqlServer(connectionString));
              });
 
