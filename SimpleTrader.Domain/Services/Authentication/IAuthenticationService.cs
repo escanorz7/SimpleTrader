@@ -11,6 +11,7 @@ namespace SimpleTrader.Domain.Services.Authentication
     {
         Success,
         PasswordsDoNotMatch,
+        WeakPassword,
         EmailAlreadyExists,
         UserNameAlreadyExists
     }

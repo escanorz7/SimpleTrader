@@ -56,6 +56,10 @@ namespace SimpleTrader.WPF.ViewModels.Commands
                     case RegistrationResult.UserNameAlreadyExists:
                         _registerViewModel.ErrorMessage = "UserName already exists";
                         break;
+                    case RegistrationResult.WeakPassword:
+                        _registerViewModel.ErrorMessage = "Password should have:\nOne lowercase character"+
+                            "\nOne uppercase character"+"\nOne digit"+"\nOne special character";
+                        break;
                     default:
                         break;
                 }

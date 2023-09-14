@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using FluentValidation.Results;
+using Microsoft.AspNet.Identity;
 using SimpleTrader.Domain.Exceptions;
 using SimpleTrader.Domain.Models;
 using System;
@@ -42,7 +43,16 @@ namespace SimpleTrader.Domain.Services.Authentication
         {
             RegistrationResult result = RegistrationResult.Success;
 
-            if (password != confirmPassword)
+            PasswordValidator validator = new PasswordValidator();
+
+            ValidationResult results = validator.Validate(password);
+
+            if (!results.IsValid)
+            {
+                result = RegistrationResult.WeakPassword;
+            }
+
+            else if (password != confirmPassword)
             {
                 result = RegistrationResult.PasswordsDoNotMatch;
             }
