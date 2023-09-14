@@ -30,6 +30,8 @@ namespace SimpleTrader.WPF.ViewModels.Commands
 
         public async void Execute(object? parameter)
         {
+            _searchSymbolViewModel.ErrorMessage = string.Empty;
+
             try
             {
                 double stockPrice = await _stockPriceService.GetPrice(_searchSymbolViewModel.Symbol);
