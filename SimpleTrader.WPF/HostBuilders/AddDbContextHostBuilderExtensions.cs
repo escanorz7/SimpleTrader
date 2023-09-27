@@ -16,7 +16,7 @@ namespace SimpleTrader.WPF.HostBuilders
             hostBuilder.ConfigureServices((context, services) =>
              {
                  string? connectionString = context.Configuration.GetConnectionString("default");
-                 services.AddDbContext<SimpleTraderDbContext>(options => options.UseSqlServer(connectionString));
+                 services.AddDbContext<SimpleTraderDbContext>();
              });
 
             return hostBuilder;
